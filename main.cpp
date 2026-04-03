@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <list>
+#include <set>
 #include <cstdlib>
 #include <ctime>
 #include "Goat.h"
@@ -10,10 +10,10 @@ using namespace std;
 const int SZ_NAMES = 200, SZ_COLORS = 25, MAX_AGE = 20;
 
 
-int select_goat(list<Goat> trip);
-void delete_goat(list<Goat> &trip);
-void add_goat(list<Goat> &trip, string n[], string c[]);
-void display_trip(list<Goat> trip);
+int select_goat(set<Goat> trip);
+void delete_goat(set<Goat> &trip);
+void add_goat(set<Goat> &trip, string n[], string c[]);
+void display_trip(set<Goat> trip);
 int main_menu();
 
 int main() {
@@ -32,7 +32,7 @@ int main() {
     while (fin1 >> colors[i++]);
     fin1.close();
 
-    list<Goat> trip;
+    set<Goat> trip;
 
     while (again) {
         int choice = main_menu();
@@ -77,7 +77,7 @@ int main_menu() {
 
 }
 
-int select_goat(list<Goat> trip) {
+int select_goat(set<Goat> trip) {
     if (trip.empty()) {
         cout << "No goats to select." << endl;
         return -1;
@@ -89,7 +89,7 @@ int select_goat(list<Goat> trip) {
 
     for (auto it = trip.begin(); it != trip.end(); it++) {
         cout << "[" << count << "] "
-            << it->get_name() << "("
+            << it->get_name() << " ("
             << it->get_age() << ", "
             << it->get_color() << ")" << endl;
         count++;
@@ -115,7 +115,7 @@ int select_goat(list<Goat> trip) {
     return choice;
     
 }
-void delete_goat(list<Goat>& trip) {
+void delete_goat(set<Goat>& trip) {
     if (trip.empty()) {
         cout << "No goats to delete." << endl;
         return;
@@ -131,7 +131,7 @@ void delete_goat(list<Goat>& trip) {
     cout << endl;
 
     cout << "Deleted goat: "
-        << it->get_name() << "("
+        << it->get_name() << " ("
         << it->get_age() << ", "
         << it->get_color() << ")" << endl;
 
@@ -142,19 +142,18 @@ void delete_goat(list<Goat>& trip) {
 }
 
 
-void add_goat(list<Goat>& trip, string n[], string c[]) {
+void add_goat(set<Goat>& trip, string n[], string c[]) {
     string name = n[rand() % SZ_NAMES];
     string color = c[rand() % SZ_COLORS];
     int age = rand() % (MAX_AGE + 1);
     Goat g(name, age, color);
 
-    trip.push_back(g);
-    trip.sort();
+    trip.insert(g);
 
     cout << endl;
     
     cout << "Added goat: " << endl
-        << g.get_name() << "(" 
+        << g.get_name() << " (" 
         << g.get_age() << ", "
         << g.get_color() << ")" << endl;
 
@@ -162,7 +161,7 @@ void add_goat(list<Goat>& trip, string n[], string c[]) {
 }
 
 
-void display_trip(list<Goat> trip) {
+void display_trip(set<Goat> trip) {
     if (trip.empty()) {
         cout << "No goats" << endl;
         return;
